@@ -1,0 +1,35 @@
+{
+  "name": "debateua",
+  "version": "1.0.0",
+  "description": "pasha sosal",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DmytroTarasenk0/Debate-API.git"
+  },
+  "keywords": [
+    "api",
+    "debates"
+  ],
+  "author": "DmytroTarasenk0",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DmytroTarasenk0/Debate-API/issues"
+  },
+  "homepage": "https://github.com/DmytroTarasenk0/Debate-API#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "sequelize": "^6.37.8",
+    "tedious": "^19.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
