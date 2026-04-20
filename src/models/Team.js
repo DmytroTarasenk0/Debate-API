@@ -6,8 +6,8 @@ module.exports = (sequelize) => {
     {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       event_id: { type: DataTypes.INTEGER, allowNull: false },
-      opener: { type: DataTypes.INTEGER, allowNull: true },
-      closer: { type: DataTypes.INTEGER, allowNull: true },
+      opener: { type: DataTypes.INTEGER, allowNull: false },
+      closer: { type: DataTypes.INTEGER, allowNull: false },
     },
     { tableName: "teams" },
   );

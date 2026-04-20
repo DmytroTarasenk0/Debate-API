@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const clubController = require("../controllers/clubController");
-const { authenticate, restrictTo } = require("../middlewares/authMiddleware");
+const { authenticate, restrictTo } = require("../middleware/authMiddleware");
 
 router.use(authenticate); // require login for everything
 

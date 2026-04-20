@@ -43,7 +43,7 @@ const updatePassword = async (req, res, next) => {
       throw new AppError("Please provide both old and new passwords.", 400);
     }
 
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(req.user.id);
 
     if (!user) {
       throw new AppError("User not found.", 404);
@@ -77,7 +77,7 @@ const updateUsername = async (req, res, next) => {
       throw new AppError("Please provide a new username.", 400);
     }
 
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(req.user.id);
 
     if (!user) {
       throw new AppError("User not found.", 404);
@@ -99,7 +99,7 @@ const updateUsername = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(req.user.id);
 
     if (!user) {
       throw new AppError("User not found.", 404);
@@ -117,7 +117,7 @@ const deleteUser = async (req, res, next) => {
 
         // flip the state
         userToSoftDelete.is_deleted = true;
-        r;
+
         // replace the username to the deleted_user with a random UUID
         userToSoftDelete.username = `deleted_user_${crypto.randomUUID()}`;
 

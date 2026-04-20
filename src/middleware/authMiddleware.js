@@ -38,15 +38,32 @@ const restrictTo = (role) => {
         if (req.body.club_id) {
           targetClubId = req.body.club_id;
         }
-        // direct club routes (PUT /api/clubs/id)
+        // direct Club routes
         else if (req.baseUrl.includes("/clubs") && req.params.id) {
           targetClubId = req.params.id;
         }
-        // event modification routes (DELETE /api/events/id)
-        else if (req.baseUrl.includes("/events") && req.params.id) {
-          // look up the event to find out which club it belongs to
-          const event = await Event.findByPk(req.params.id);
+        // Event routes (/:eventId and /events/:id)
+        else if (
+          req.params.eventId ||
+          (req.baseUrl.includes("/events") && req.params.id)
+        ) {
+          const eventIdToCheck = req.params.eventId || req.params.id;
+          const event = await Event.findByPk(eventIdToCheck);
           if (!event) throw new AppError("Event not found.", 404);
+          targetClubId = event.club_id;
+        }
+        // Team routes (/teams/:teamId)
+        else if (req.params.teamId) {
+          const team = await Team.findByPk(req.params.teamId);
+          if (!team) throw new AppError("Team not found.", 404);
+          const event = await Event.findByPk(team.event_id);
+          targetClubId = event.club_id;
+        }
+        // Room routes (/rooms/:roomId)
+        else if (req.params.roomId) {
+          const room = await Room.findByPk(req.params.roomId);
+          if (!room) throw new AppError("Room not found.", 404);
+          const event = await Event.findByPk(room.event_id);
           targetClubId = event.club_id;
         }
 
@@ -67,7 +84,7 @@ const restrictTo = (role) => {
       }
 
       if (role === "judge") {
-        const resourceId = req.params.id; // room_id
+        const resourceId = req.params.roomId || req.params.id;
         const room = await Room.findOne({
           where: { id: resourceId, judge: userId },
         });

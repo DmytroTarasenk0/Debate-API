@@ -8,7 +8,6 @@ module.exports = (sequelize) => {
       room_team_id: { type: DataTypes.INTEGER, allowNull: false },
       user_id: { type: DataTypes.INTEGER, allowNull: false },
       score: { type: DataTypes.SMALLINT, allowNull: true },
-      is_iron_man: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     { tableName: "room_speakers" },
   );
