@@ -116,4 +116,71 @@ const deleteClub = async (req, res, next) => {
   }
 };
 
-module.exports = { createClub, getAllClubs, getClub, updateClub, deleteClub };
+// add an Owner (can be done by existing Owner or Admin)
+const addOwner = async (req, res, next) => {
+  try {
+    const clubId = req.params.id; // /clubs/:id/owners
+    const { targetUserId } = req.body;
+
+    if (!targetUserId)
+      throw new AppError("Please provide the targetUserId.", 400);
+
+    const targetUser = await User.findByPk(targetUserId);
+    if (!targetUser) throw new AppError("User not found.", 404);
+
+    const existingOwner = await Owner.findOne({
+      where: { user_id: targetUserId, club_id: clubId },
+    });
+
+    if (existingOwner)
+      throw new AppError("User is already an owner of this club.", 400);
+
+    await Owner.create({ user_id: targetUserId, club_id: clubId });
+
+    res
+      .status(201)
+      .json({ status: "success", message: "Owner added successfully." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// remove an Owner (restricted to Admins)
+const removeOwner = async (req, res, next) => {
+  try {
+    const clubId = req.params.id;
+    const ownerIdToRemove = req.params.ownerId;
+
+    // don't accidentally leave a club completely orphaned
+    const ownerCount = await Owner.count({ where: { club_id: clubId } });
+    if (ownerCount <= 1) {
+      throw new AppError(
+        "Cannot remove the last owner. Assign a new owner first or delete the club.",
+        400,
+      );
+    }
+
+    const deletedCount = await Owner.destroy({
+      where: { user_id: ownerIdToRemove, club_id: clubId },
+    });
+
+    if (deletedCount === 0)
+      throw new AppError("This user is not an owner of this club.", 404);
+
+    res
+      .status(200)
+      .json({ status: "success", message: "Owner removed successfully." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  createClub,
+  getAllClubs,
+  getClub,
+  updateClub,
+  deleteClub,
+  addOwner,
+  removeOwner,
+};

@@ -33,13 +33,6 @@ module.exports = (sequelize) => {
       otherKey: "club_id",
       onDelete: "CASCADE",
     });
-    User.belongsToMany(models.Club, {
-      through: models.Member,
-      as: "Memberships",
-      foreignKey: "user_id",
-      otherKey: "club_id",
-      onDelete: "CASCADE",
-    });
     User.belongsToMany(models.Event, {
       through: models.Waitlist,
       as: "WaitlistedEvents",

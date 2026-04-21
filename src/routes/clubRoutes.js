@@ -13,4 +13,11 @@ router.post("/", restrictTo("admin"), clubController.createClub);
 router.put("/:id", restrictTo("owner"), clubController.updateClub);
 router.delete("/:id", restrictTo("owner"), clubController.deleteClub);
 
+router.post("/:id/owners", restrictTo("owner"), clubController.addOwner);
+router.delete(
+  "/:id/owners/:ownerId",
+  restrictTo("admin"),
+  clubController.removeOwner,
+);
+
 module.exports = router;

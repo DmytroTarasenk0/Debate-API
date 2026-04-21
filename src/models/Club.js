@@ -25,12 +25,6 @@ module.exports = (sequelize) => {
       foreignKey: "club_id",
       otherKey: "user_id",
     });
-    Club.belongsToMany(models.User, {
-      through: models.Member,
-      as: "Members",
-      foreignKey: "club_id",
-      otherKey: "user_id",
-    });
     Club.hasMany(models.Event, {
       foreignKey: "club_id",
       onDelete: "NO ACTION",
