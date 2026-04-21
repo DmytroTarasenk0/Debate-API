@@ -4,7 +4,7 @@ const router = express.Router();
 const userRoutes = require("./userRoutes");
 const clubRoutes = require("./clubRoutes");
 const eventRoutes = require("./eventRoutes");
-const adminRoutes = require("./adminroutes");
+const adminRoutes = require("./adminRoutes");
 
 router.use("/users", userRoutes);
 router.use("/clubs", clubRoutes);

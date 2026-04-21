@@ -103,7 +103,7 @@ const createTeam = async (req, res, next) => {
   }
 };
 
-// owner fetches all teams for the event
+// now everyone can fetch all teams for the event
 const getEventTeams = async (req, res, next) => {
   try {
     const eventId = req.params.eventId;

@@ -35,6 +35,39 @@ const createUser = async (req, res, next) => {
   }
 };
 
+const login = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      throw new AppError("Please provide both a username and a password.", 400);
+    }
+
+    const user = await User.findOne({ where: { username } });
+
+    if (!user || user.is_deleted) {
+      throw new AppError("Invalid credentials.", 401);
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new AppError("Invalid credentials.", 401);
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Login successful.",
+      data: {
+        id: user.id,
+        username: user.username,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updatePassword = async (req, res, next) => {
   try {
     const { oldPassword, newPassword } = req.body;
@@ -142,6 +175,7 @@ const deleteUser = async (req, res, next) => {
 
 module.exports = {
   createUser,
+  login,
   updatePassword,
   updateUsername,
   deleteUser,

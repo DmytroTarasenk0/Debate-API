@@ -10,7 +10,7 @@ const AppError = require("../utils/AppError");
 const { Op } = require("sequelize");
 
 // Owner hand-picks 4 teams, 1 judge, and their exact positions
-const createManualRoom = async (req, res, next) => {
+const createRoom = async (req, res, next) => {
   const transaction = await sequelize.transaction();
 
   try {
@@ -42,8 +42,6 @@ const createManualRoom = async (req, res, next) => {
         { room_team_id: roomTeam.id, user_id: team.closer },
       ];
       await RoomSpeaker.bulkCreate(speakersToCreate, { transaction });
-
-      await RoomSpeaker.bulkCreate(speakersToCreate, { transaction });
     }
 
     await transaction.commit();
@@ -59,7 +57,7 @@ const getEventRooms = async (req, res, next) => {
   try {
     const eventId = req.params.eventId;
 
-    // fetch the Room => RoomTeams => Teams => Users
+    // fetch the Room => RoomTeams => Teams => Users => RoomSpeakers
     const rooms = await Room.findAll({
       where: { event_id: eventId },
       include: [
@@ -81,6 +79,10 @@ const getEventRooms = async (req, res, next) => {
                   attributes: ["id", "username"],
                 },
               ],
+            },
+            {
+              model: RoomSpeaker,
+              attributes: ["id", "user_id", "score"],
             },
           ],
         },
@@ -110,7 +112,7 @@ const deleteRoom = async (req, res, next) => {
 };
 
 module.exports = {
-  createManualRoom,
+  createRoom,
   getEventRooms,
   deleteRoom,
 };

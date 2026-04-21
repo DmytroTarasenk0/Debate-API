@@ -4,8 +4,9 @@ const userController = require("../controllers/userController");
 const statsController = require("../controllers/statsController");
 const { authenticate } = require("../middleware/authMiddleware");
 
-// anyone can register an account
-router.post("/", userController.createUser);
+// anyone can register an account (or login)
+router.post("/register", userController.createUser);
+router.post("/login", userController.login);
 
 router.use(authenticate);
 

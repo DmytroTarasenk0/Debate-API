@@ -22,7 +22,6 @@ const models = {
   Team: require("./Team")(sequelize),
   Admin: require("./Admin")(sequelize),
   Owner: require("./Owner")(sequelize),
-  Member: require("./Member")(sequelize),
   Waitlist: require("./Waitlist")(sequelize),
   RoomTeam: require("./RoomTeam")(sequelize),
   RoomSpeaker: require("./RoomSpeaker")(sequelize),

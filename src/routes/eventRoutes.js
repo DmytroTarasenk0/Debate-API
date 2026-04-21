@@ -32,27 +32,20 @@ router.get(
 // same for Team
 // users register themselves and a friend
 router.post("/:eventId/teams/register", teamController.registerTeam);
+// and everyone can see the teams
+router.get("/:eventId/teams", teamController.getEventTeams);
 
 router.post("/:eventId/teams", restrictTo("owner"), teamController.createTeam);
-router.get(
-  "/:eventId/teams",
-  restrictTo("owner"),
-  teamController.getEventTeams,
-);
 router.put("/teams/:teamId", restrictTo("owner"), teamController.updateTeam);
 router.delete("/teams/:teamId", restrictTo("owner"), teamController.deleteTeam);
 
 // and Rooms
 router.get("/:eventId/rooms", roomController.getEventRooms);
 
-router.post(
-  "/:eventId/rooms/manual",
-  restrictTo("owner"),
-  roomController.createManualRoom,
-);
+router.post("/:eventId/rooms", restrictTo("owner"), roomController.createRoom);
 router.delete("/rooms/:roomId", restrictTo("owner"), roomController.deleteRoom);
 
-// only the assigned Judge can submit score
+// only the assigned Judge (or Owner) can submit score
 router.put(
   "/rooms/:roomId/scores",
   restrictTo("judge"),

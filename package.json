@@ -1,7 +1,7 @@
 {
-  "name": "debateua",
+  "name": "debate-api",
   "version": "1.0.0",
-  "description": "pasha sosal",
+  "description": "Complex API for managing Debate Clubs and Events",
   "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
